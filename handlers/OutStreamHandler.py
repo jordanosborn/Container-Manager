@@ -5,7 +5,7 @@ class OutStreamHandler(tornado.websocket.WebSocketHandler):
         self.message_queue = []
 
     def add_to_queue(self, message):
-        
+        pass
 
     def check_origin(self, origin):
         return True
