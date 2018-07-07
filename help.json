@@ -1,3 +1,7 @@
 {
-    "build": "Build help text."
+    "build": "Build help text.",
+    "pull": "Pull help text.",
+    "images": "Images help text.",
+    "volume": "Volume help text.",
+    "volumes": "Volumes help text."
 }

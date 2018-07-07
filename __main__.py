@@ -16,14 +16,11 @@ help_json = {}
 with open('help.json', 'r') as f:
     help_json = json.loads(f.read())
 
-all_string = ''
-for key, value in help_json.items():
-    all_string += f'{key}<br>{value}<br>'
-help_json['all'] = all_string
-
 import handlers
 
 docker_env = docker.APIClient()
+
+# if already in list switch to management request!
 
 def make_app():
     return tornado.web.Application([
@@ -32,8 +29,9 @@ def make_app():
         (r"/build/(.*)", handlers.BuildHandler, {'docker_env': docker_env, 'whitelisted_base_images': config['image_whitelist']}),
         (r"/pull/(.*)/(.*)", handlers.PullHandler, {'whitelist': config['image_whitelist'], 'docker_env': docker_env}),
         (r"/pull/(.*)", handlers.PullHandler, {'whitelist': config['image_whitelist'], 'docker_env': docker_env}),
-        (r"/help/(.*)", handlers.HelpHandler, {"help_json": help_json}),
-        (r"/help", tornado.web.RedirectHandler, dict(url=r"/help/all")),
+        (r"/volume/(.*)", handlers.VolumeHandler, {'docker_env': docker_env}),
+        (r"/help", handlers.HelpHandler, {"help_json": help_json}),
+        #(r"/help", tornado.web.RedirectHandler, dict(url=r"/help/all")),
         (r"/outstream", handlers.OutStreamHandler)
     ])
 
