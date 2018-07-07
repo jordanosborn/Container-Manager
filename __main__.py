@@ -27,11 +27,12 @@ docker_env = docker.APIClient()
 
 def make_app():
     return tornado.web.Application([
-        (r"/", handlers.MainHandler, {}),
-        (r"/build", handlers.BuildHandler, {'docker_env': docker_env}),
+        (r"/", handlers.MainHandler, {'docker_env': docker_env}),
+        (r"/", handlers,ImagesHandler, {'docker_env': docker_env})
+        (r"/build/(.*)", handlers.BuildHandler, {'docker_env': docker_env, 'whitelisted_base_images': config['image_whitelist']}),
         (r"/pull/(.*)/(.*)", handlers.PullHandler, {'whitelist': config['image_whitelist'], 'docker_env': docker_env}),
         (r"/pull/(.*)", handlers.PullHandler, {'whitelist': config['image_whitelist'], 'docker_env': docker_env}),
-        (r"/help/(.*)", handlers.HelpHandler, {"help_json" : help_json}),
+        (r"/help/(.*)", handlers.HelpHandler, {"help_json": help_json}),
         (r"/help", tornado.web.RedirectHandler, dict(url=r"/help/all")),
         (r"/outstream", handlers.OutStreamHandler)
     ])
