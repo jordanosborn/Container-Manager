@@ -1,4 +1,3 @@
-import tornado.ioloop
 import tornado.web
 import docker
 import json
@@ -10,7 +9,8 @@ class PullHandler(tornado.web.RequestHandler):
 
     def post(self, image, tag=None):
         if image in self.whitelist:
-            self.docker_env.images.pull(image, tag)
+            for line in self.docker_env.pull(image, tag, stream=True):
+                print(json.dumps(json.loads(line), indent=4))
             self.write('success')
         else:
             self.write('403 Image blacklisted.')

@@ -23,7 +23,7 @@ help_json['all'] = all_string
 
 import handlers
 
-docker_env = docker.from_env()
+docker_env = docker.APIClient()
 
 def make_app():
     return tornado.web.Application([
@@ -32,7 +32,8 @@ def make_app():
         (r"/pull/(.*)/(.*)", handlers.PullHandler, {'whitelist': config['image_whitelist'], 'docker_env': docker_env}),
         (r"/pull/(.*)", handlers.PullHandler, {'whitelist': config['image_whitelist'], 'docker_env': docker_env}),
         (r"/help/(.*)", handlers.HelpHandler, {"help_json" : help_json}),
-        (r"/help", tornado.web.RedirectHandler, dict(url=r"/help/all"))
+        (r"/help", tornado.web.RedirectHandler, dict(url=r"/help/all")),
+        (r"/outstream", handlers.OutStreamHandler)
     ])
 
 if __name__ == "__main__":
