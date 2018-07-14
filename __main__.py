@@ -35,16 +35,19 @@ def make_app(config, help_json):
         #(r"/help", tornado.web.RedirectHandler, dict(url=r"/help/all")),
         (r"/outstream", handlers.OutStreamHandler)
     ])
-import sys
+
 if __name__ == "__main__":
     config, help_json = build_config()
     app = make_app(config, help_json)
     app.listen(config['port'])
     print(f'Server running on 127.0.0.1:{config["port"]}')
+    threads = []
     t = threading.Thread(target=tornado.ioloop.IOLoop.current().start, daemon=True)
+    threads.append(t)
     t.start()
+
     while True:
         cmd = input('cmd> ')
         if cmd == 'quit':
             print('Server stopping')
-            sys.exit()
+            exit()
