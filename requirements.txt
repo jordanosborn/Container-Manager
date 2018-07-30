@@ -1,3 +1,5 @@
 docker
 tornado
 requests
+inflection
+dockerfile-parse

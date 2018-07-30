@@ -1,0 +1,6 @@
+{
+    "port" : 8080,
+    "image_whitelist": [
+        "python"
+    ]
+}
